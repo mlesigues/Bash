@@ -1,0 +1,55 @@
+#Name: Marielle Lesigues
+
+1. twice program
+[mlesigu1@hills 3]$ ./twice 15
+30
+[mlesigu1@hills 3]$ ./twice 0
+0
+[mlesigu1@hills 3]$ ./twice 10
+20
+[mlesigu1@hills 3]$ ./twice 5
+10
+[mlesigu1@hills 3]$ ./twice 9
+18
+
+If a noninteger value is typed, it returns 0 or an error.
+[mlesigu1@hills 3]$ ./twice !
+./twice: line 7: let: multtwo = ! * 2: syntax error: operand expected (error token is "* 2")
+
+[mlesigu1@hills 3]$ ./twice a
+0
+
+If the argument is omitted, it returns an error.
+[mlesigu1@hills 3]$ ./twice
+./twice: line 7: let: multtwo =  * 2: syntax error: operand expected (error token is "* 2")
+
+2. home program
+[mlesigu1@hills 3]$ ./home mlesigu1
+/students/mlesigu1
+[mlesigu1@hills 3]$ ./home alapid2
+/students/alapid2
+[mlesigu1@hills 3]$ ./home mkirubi
+/students/mkirubi
+[mlesigu1@hills 3]$ ./home drahman
+/users/drahman
+[mlesigu1@hills 3]$ ./home apayne15
+/students/apayne15
+
+3. suffix program
+[mlesigu1@hills lab3]$ ./suffix samplefile1 .suffix
+[mlesigu1@hills lab3]$ ./suffix samplefile2 .suffix
+[mlesigu1@hills lab3]$ ./suffix samplefile3 .suffix
+[mlesigu1@hills lab3]$ ./suffix samplefile4 .suffix
+[mlesigu1@hills lab3]$ ./suffix samplefile5 .suffix
+[mlesigu1@hills lab3]$ ls
+samplefile1.suffix  samplefile3.suffix  samplefile5.suffix  unsuffix
+samplefile2.suffix  samplefile4.suffix  suffix
+
+4. Unsuffix program
+[mlesigu1@hills lab3]$ ./unsuffix samplefile1.suffix .suffix
+[mlesigu1@hills lab3]$ ./unsuffix samplefile2.suffix .suffix
+[mlesigu1@hills lab3]$ ./unsuffix samplefile3.suffix .suffix
+[mlesigu1@hills lab3]$ ./unsuffix samplefile4.suffix .suffix
+[mlesigu1@hills lab3]$ ./unsuffix samplefile5.suffix .suffix
+[mlesigu1@hills lab3]$ ls
+samplefile1  samplefile2  samplefile3  samplefile4  samplefile5  suffix  unsuffix
