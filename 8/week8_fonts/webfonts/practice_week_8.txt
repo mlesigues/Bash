@@ -1,0 +1,61 @@
+#!/bin/bash
+# Name: Marielle Lesigues
+# File: mkstyle
+# Desc: a shell script that uses eval and a CSS template to create a "@font-face" CSS stylesheet for any directory
+#	containing truetype (ttf), opentype (otf), woff or woff2 format fonts.
+
+#example of a path: /students/mlesigu1/cs160b/8/week8_fonts/webfonts/inconsolata
+#begin search in "inconsolata"
+
+#thinking: when user gives the path to 1 of the fonts, cd into that directory, use find command to find all the 4 formats only (ignore the others) & write the$
+#into the directory containing the fonts
+
+#check if user put an argument (path) else throw a usage err
+if [[ $# -eq 0 ]]
+then
+    	printf "%sUsage: mkstyle <path_to_font_directory>\n"
+elif [[ -d "$1" ]]
+then
+    	printf "%sThis directory exists.\n"
+        printf "%sGoing in there now.\n"
+        cd $1
+	printf "%s$(pwd)\n"
+else
+    	printf "%sIncorrect usage or directory does not exists.\n"
+fi
+
+#after going to the font directory, use find to find all font format
+find_format="$(find . -name "*.ttf" -o -name "*.otf" -o -name "*.woff" -o -name "*.woff2")"
+#printf "%s$find_format\n"
+font_ttf="*.ttf"
+font_otf="*.otf"
+font_woff="*.woff"
+font_woff2="*.woff2"
+
+#store the font names into an array
+myarray_font=()
+#while IFS='\n' read -r -d $'\0' myfont
+#do
+   	#myarray_font=("${myarray_font[@]}" "$myfont")
+#	myarray_font=$(myfont)
+#done < <(find . -name "${font_ttf}" -o -name "${font_otf}" -o -name "${font_woff}" -o -name "${font_woff2}" -print0)
+#echo "${myarray_font[@]}"
+
+for arrItem in ${find_format[@]}
+do
+  	eval 'for val in "${$arrItem'[@]}"; do
+                echo "$val"
+              done'
+done
+
+#variables
+#example of font name with extensions: ./otf/ZillaSlab-SemiBoldItalic.otf, ./AvrileSerif-Italic.ttf, ./Inconsolata-Bold.ttf
+#basename without an extension, so only ZillaSlab-SemiBoldItalic, AvrileSerif-Italic, Inconsolata-Bold
+#FONT_NAME=
+
+#4 types(without the dot at the front): woff, woff2, opentype, ttf
+#FONT_FORMAT=
+
+WEIGHT=normal
+
+STYLE=normal
