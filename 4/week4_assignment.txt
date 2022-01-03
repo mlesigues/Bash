@@ -1,0 +1,160 @@
+# Name: Marielle Lesigues
+# File: week4_assignment.txt
+# Desc: Week 4 assignment tasks: casetimeod, caseitsayes, & onlinetime
+
+#!/bin/bash
+# Name: Marielle Lesigues
+# File: casetimeod
+# Desc: rewriting of timeod using case (instead of if statements)
+
+#echo $(date)
+
+#get the day
+getday="$(date|cut -d' ' -f1)"
+
+#get the month
+getmonth="$(date|cut -d' ' -f2)"
+
+#get the date
+getdate="$(date|cut -d' ' -f3)"
+
+#get the year
+getyear="$(date|cut -c25-28)"
+
+#get the hour
+gethour="$(date|cut -c12-13)"
+
+#get the minutes
+getminutes="$(date|cut -c15-16)"
+
+#get the seconds
+getseconds="$(date|cut -c18-19)"
+#echo ${getseconds}
+
+hourvar=12
+finalhour=$((gethour-hourvar))
+
+#AM is from 0 hour to 11:59:59 or before 12
+
+#case version
+case ${gethour} in
+        " 0")
+             	echo ${getday}", "${getmonth}" "${getdate}", "${getyear}" 12:"${getminutes}":"${getseconds}" AM";; #this is midnight
+        " [:digit:]")
+                echo ${getday}", "${getmonth}" "${getdate}", "${getyear}" "${gethour}":"${getminutes}":"${etseconds}" AM";; #any hour between 1AM to 11:59:59AM
+        1[01])
+              	echo ${getday}", "${getmonth}" "${getdate}", "${getyear} " 12:"${getminutes}":"${getseconnds}" PM";; #after morning hours
+        *)
+          	echo ${getday}", "${getmonth}" "${getdate}", "${getyear}" "${finalhour}":"${getminutes}":"${getseconds}" PM";; #anything that does not match the patte$
+esac
+
+############################################################################################################################################################################
+
+#!/bin/bash
+# Name: Marielle Lesigues
+# File: caseitsayes
+# Desc: rewriting the itsayes program use case command
+
+#check if the user put an argument
+if test $# -eq 0
+then
+    	echo "no argument supplied, goodbye"
+        exit 1
+fi
+
+case $1 in
+	"y")
+            	echo "argument accepted"
+                exit 0;;
+        "yes")
+              	echo "argument accepted"
+                exit 0;;
+        "Yes")
+              	echo "argument accepted"
+                exit 0;;
+        "YES")
+              	echo "argument accepted"
+                exit 0;;
+        "Y")
+            	echo "argument accepted"
+                exit 0;;
+        *)
+          	echo "argument not accepted, goodbye"
+                exit 1;;
+esac
+
+
+#########################################################################################################################################################################
+
+#!/bin/bash
+# Name: Marielle Lesigues
+# File: onlinetime
+# Desc: a program that prints the number of hours and minutes that a user has been logged on to the Hills system. Assume that
+#	the total time is always less than 24 hours.
+#	Use a positional parameter for the user's id. If the user id is logged in to multiple session, use only one of them.
+#	Use head -1 or tail -1 to select a single session.
+
+#check if there is an argument
+if test $# -eq 0
+then
+    	echo "no argument supplied, goodbye"
+fi
+
+#use who and grep to find the user
+userinfo="$(who | grep $1)"
+
+#but what if multiple session? need to handle multiple session for a single user
+#$(who | grep $1 | head -1)
+#user_vertwo="$(${userinfo}|head -1)"
+
+#example: mlesigu1 pts/0        2021-11-21 18:28 (98.42.183.212)
+#the login name is 8 characters max!
+
+getwholemonth="$(who | grep $1 | cut -c28-29)"
+getwholedate="$(who | grep $1 | cut -c31-32)"
+getwholeyear="$(who | grep $1 | cut -c23-26)"
+
+#get the whole time
+#example: Sun Nov 21 19:12:17 PST 2021
+getwholetime="$(date | cut -c12-19)"
+echo "DATE: "${getwholemonth}"/"${getwholedate}"/"${getwholeyear}" TIME:"${getwholetime}
+
+#get the username
+getusername="$(who | grep $1 | cut -c1-8)"
+echo "USER: "${getusername}
+
+#get the login time
+userloginhour="$(who | grep $1 | cut -c34-35)"
+userloginmin="$(who | grep $1 | cut -c37-38)"
+
+#get the current time
+getcurrhour="$(date | cut -c12-13)"
+getcurrmin="$(date | cut -c15-16)"
+
+#online session -> current time - login time
+#reminder that we can't have negative hour and negative minute, it does not make sense
+useronlinesess_hr=$((getcurrhour - userloginhour))
+
+useronlinesess_min=$((getcurrmin - userloginmin))
+
+#check if the minute is a single or two digit number
+usermin="${#useronlinesess_min}"
+
+#check if the useronlinesess_hr is 0, make it base 10
+if test $useronlinesess_hr -eq 0
+then
+    	useronlinesess_hr=$(( 10#$useronlinesess_hr + 10#0 ))
+#	echo "hour passed is: "${useronlinesess_hr}
+elif test $useronlinesess_hr -le 24
+then
+    	useronlinesess_hr=$(( 24 - $useronlinesess_hr ))
+#	echo "hour passed is: "${useronlinesess_hr}
+fi
+
+if test $usermin -le 1
+then
+    	usermin=$(( 10#$usermin + 10#00))
+#	echo "minute passed is: " ${usermin}
+fi
+
+
